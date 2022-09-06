@@ -1,4 +1,4 @@
-const dbConfig = require("../Config/env");
+const dbConfig = require("../config/env");
 const {Sequelize,DataTypes} = require('sequelize');
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
