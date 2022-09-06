@@ -1,6 +1,6 @@
 var express = require('express');
-var db = require("../../models");
-const User = db.users;
+//var db = require("../../models");
+//const User = db.users;
 
 module.exports.homePage = async (req, res) => {
     // const UserID = req.user.user_id;

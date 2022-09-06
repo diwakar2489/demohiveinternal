@@ -12,11 +12,11 @@ console.log(process.env.DB_HOST); // 👉️ "james_doe"
 console.log(process.env.DB_DATABASE); // 👉️ "dev"
 console.log(process.env.PORT); // 👉️ "1234"
 
-db.sequelize.sync({ force: false }).then(() => {
-  console.log("Drop and re-sync db.");
-});
+// db.sequelize.sync({ force: false }).then(() => {
+//   console.log("Drop and re-sync db.");
+// });
 var indexRouter = require('./src/routes/index');
-var authRouter = require('./src/routes/auth');
+//var authRouter = require('./src/routes/auth');
 
 app.use(logger('dev'));
 app.use(cors());
@@ -32,7 +32,7 @@ app.set('view engine', 'ejs');
 
 
 app.use('/',indexRouter);
-app.use('/login',authRouter);
+//app.use('/login',authRouter);
 
 
 
