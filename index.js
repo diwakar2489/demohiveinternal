@@ -30,6 +30,7 @@ app.set('view engine', 'ejs');
 
 
 
+
 app.use('/',indexRouter);
 app.use('/login',authRouter);
 
