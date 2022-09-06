@@ -1,0 +1,175 @@
+
+<!-- jQuery -->
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../assets/dist/js/adminlte.min.js"></script>
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"
+></script>
+<script>
+$(document).ready(function () {
+
+$("#registerSubmit").click(function (e) {
+    e.preventDefault();
+
+    let emptyInputCount = 0;
+    let getName = $("#full_name").val();
+    let getEmail = $("#email").val();
+    let getPassword = $("#pass").val();
+    let getretype_pass = $("#retype_pass").val();
+    $("#registrationFrm input").each(function () {
+        
+        if (getName == "") {
+        $("#full_name").css("border-color", "red");
+        $("#name_err").text('Name is required!');
+        emptyInputCount = 1;
+        }else if (getEmail == "") {
+        $("#email").css("border-color", "red");
+        $("#email_err").text('Email is required!');
+        emptyInputCount = 1;
+        } else if (getPassword == "") {
+        $("#pass").css("border-color", "red");
+        $("#pass_err").text('Password is required!');
+        emptyInputCount = 1;
+        } else if (getretype_pass == '') {
+        $("#retype_pass").css("border-color", "red");
+        $("#retype_err").text('Password Retype is required!');
+        emptyInputCount = 1;
+        } else if (getretype_pass != getPassword) {
+        $("#retype_pass").css("border-color", "red");
+        $("#retype_err").text('Password not match is required!');
+        
+        emptyInputCount = 1;
+        }else {
+        $("#full_name").css("border-color", "#ced4da");
+        $("#email").css("border-color", "#ced4da");
+        $("#pass").css("border-color", "#ced4da");
+        $("#retype_pass").css("border-color", "#ced4da");
+        
+        }
+    });
+
+    if (emptyInputCount == 0) {
+        // let getTerms = $("#agreeTerms").val();
+
+        postObj = {
+        name: getName,
+        email: getEmail,
+        password: getPassword,
+        };
+
+        $.ajax({
+        type: "POST",
+        url: "/user/add-info",
+        data: postObj,
+        success: function (data) {
+            var base_url = window.location.origin;
+            console.log(data)
+            if(data['status'] == 'errors'){
+            $("#email").css("border-color", "red");
+            $("#email_err").css("display", "block");
+            $("#email_err").text('This user already signed up');
+            $("#retype_err").css("display", "none");
+            $("#pass_err").css("display", "none");
+            $("#name_err").css("display", "none");
+            $("#full_name").css("border-color", "#ced4da");
+            $("#email").css("border-color", "#ced4da");
+            $("#pass").css("border-color", "#ced4da");
+            $("#retype_pass").css("border-color", "#ced4da");
+
+
+            }else{
+            $("#name_err").css("display", "none");
+            $("#name_err").text('');
+
+            $("#email").css("border-color", "#ced4da");
+            $("#email_err").css("display", "none");
+            $("#email_err").text('');
+
+            $("#pass").css("border-color", "#ced4da");
+            $("#pass_err").css("display", "none");
+            $("#pass_err").text('');
+
+            $("#retype_pass").css("border-color", "#ced4da");
+            $("#retype_err").css("display", "none");
+            $("#retype_err").text('');
+
+            $("#success_sms").css("color", "green");
+            $("#success_sms").css("display", "block");
+            $("#success_sms").text("Register a new membership successfully");
+            setTimeout(function() {
+                window.location.replace(base_url+'/login/')
+                }, 1000);
+            
+            }
+            
+        },
+        });
+    }
+    });
+});
+$("#login_user").click(function (e) {
+    //console.log('on')
+    e.preventDefault();
+    let emptyInputCount = 0;
+    let getEmail = $("#email").val();
+    let getPassword = $("#password").val();
+   
+    $("#loginFrm input").each(function () {
+        console.log('vailidate')
+        if (getEmail == "") {
+        $("#email").css("border-color", "red");
+        $("#email_err").text('Email is required!');
+        emptyInputCount = 1;
+        } else if (getPassword == "") {
+        $("#password").css("border-color", "red");
+        $("#password_err").text('Password is required!');
+        emptyInputCount = 1;
+        }else {
+        $("#email").css("border-color", "#ced4da");
+        $("#password").css("border-color", "#ced4da");
+        
+        }
+    });
+    if(emptyInputCount == 0){
+        
+    postObj = {
+        email: getEmail,
+        password: getPassword,
+        };
+
+        $.ajax({
+        type: "POST",
+        url: "/login",
+        data: postObj,
+        success: function (data) {
+            var base_url = window.location.origin;
+            console.log(data)
+            if(data['status'] == 0){
+
+            $("#err_message").css("display", "block");
+            $("#err_message").css("color", "red");
+            $('#err_message').text(data['message']);
+
+            }else{
+            $("#success_sms").css("display", "block");
+            $("#success_sms").css("color", "green");
+            $("#success_sms").text(data['message']);
+            setTimeout(function() {
+                window.location.replace(base_url+'/dashboard/index/')
+                }, 1000);
+            
+            }
+            
+        },
+        });
+    }
+    
+});
+</script>
+</body>
+</html>
