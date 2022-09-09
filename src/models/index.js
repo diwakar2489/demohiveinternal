@@ -27,6 +27,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require("../migration/user")(sequelize, Sequelize,DataTypes);
+db.project_list = require("../migration/project_list")(sequelize, Sequelize,DataTypes);
 module.exports = db;
 
 

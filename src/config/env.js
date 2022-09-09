@@ -4,6 +4,10 @@ module.exports = {
     PASSWORD: '',
     DB: process.env.DB_DATABASE,
     dialect: "mysql",
+    define: {
+        timestamps: true,
+        freezeTableName: true
+      },
     pool: {
         max: 10,
         min: 0,

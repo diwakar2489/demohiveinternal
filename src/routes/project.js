@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const home = require('../controllers/home/home');
+const ProjectCtrl = require('../controllers/project/project_api');
 
 // const validater = require("../middlewere/vailidation");
 
-router.get('/',home.homePage);
+router.post('/list',ProjectCtrl.ProjectList);
 
 
 module.exports = router;
