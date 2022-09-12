@@ -32,7 +32,7 @@ app.set('view engine', 'ejs');
 
 
 app.use('/login',authRouter);
-app.use('/project',projectRouter);
+app.use('/projectlist',projectRouter);
 
 
 

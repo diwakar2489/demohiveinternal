@@ -18,7 +18,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 
 
 sequelize.authenticate().then(() =>{
-    console.log('connected')
+    console.log('connected sequelize')
 }).catch(err =>{
     console.log('Errorff' + err)});
 
@@ -27,9 +27,12 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require("../migration/user")(sequelize, Sequelize,DataTypes);
+db.tm_users_infos = require("../migration/tm_users_infos")(sequelize, Sequelize,DataTypes);
 db.project_list = require("../migration/project_list")(sequelize, Sequelize,DataTypes);
 module.exports = db;
 
 
- // db.Category.hasOne(db.JobPosting,{foreignKey:'job_category_id'});
- // db.JobPosting.belongsTo(db.Category,{foreignKey:'job_category_id'});
+ 
+ 
+ db.tm_users_infos.hasOne(db.project_list,{foreignKey:'created_by'});
+ db.project_list.belongsTo(db.tm_users_infos,{foreignKey:'id',as:'UserDetails'});

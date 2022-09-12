@@ -18,7 +18,7 @@ module.exports.loginUser = async (req,res) =>{
 		}
       
 		const user = await User.findOne({ where:{email:email,password:md5(password) }});
-		console.log(user)
+		//console.log(user)
 		if (user) {
 			const token = jwt.sign(
 			  { user_id: user.id, email },

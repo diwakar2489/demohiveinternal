@@ -1,31 +1,103 @@
-var db = require("../../models");
-console.log(db);
-const Projects = db.project_list;
+//var db = require("../../models");
+const response = require('../../config/response');
+const responseCode = require('../../utils/constant');
+const project_Model = require('../../models/projectListModel');
 
-module.exports.ProjectList = async (req,res) =>{
+module.exports.List = async (req,res) =>{
  
   try {
-		
-		const Project = await Projects.findAll();
-		console.log(Project)
-		if (Project) {
-			
-			res.send({ 
-				projectInfo:Project,
-				status: 1,
-				message: "Project List Access Successfully"
-			 });
-			
-
-		}else{
-			res.send({ 
-				loginData:"",
-				status: 0,
-				message: "Project List Not Access"
-			 });
-		}
-    } catch (err) {
-		console.log(err);
+		project_Model.getAllProject((error, projects) => {
+			console.log(projects);
+			if(projects){
+				response.successResponse("Project List fetch successfully",projects, (error, result) => {
+					res.status(responseCode.HTTP_OK).json(result);
+				});
+			}else{
+				response.errorResponse("Something went wrong!", (error, result) => {
+						res.status(responseCode.HTTP_NOT_FOUND).json(result);
+				});
+			}
+		});
+	} catch (e) {
+        //console.log(e.message);
+        response.errorResponse('Something went wrong!.',(error,result) =>{
+            res.status(responseCode.HTTP_INTERNAL_SERVER_ERROR).json(result);
+        });
     }
 };
+module.exports.edit = async (req,res) =>{
+ 
+	try {
+		let ID = req.body.id;
+		  project_Model.getProjectById(ID,(error, projects) => {
+			  console.log(projects);
+			  if(projects){
+				  response.successResponse("Project Edit Info successfully",projects, (error, result) => {
+					  res.status(responseCode.HTTP_OK).json(result);
+				  });
+			  }else{
+				  response.errorResponse("Something went wrong!", (error, result) => {
+						  res.status(responseCode.HTTP_NOT_FOUND).json(result);
+				  });
+			  }
+		  });
+	  } catch (e) {
+		  //console.log(e.message);
+		  response.errorResponse('Something went wrong!.',(error,result) =>{
+			  res.status(responseCode.HTTP_INTERNAL_SERVER_ERROR).json(result);
+		  });
+	  }
+  };
+  module.exports.update = async (req,res) =>{
+	try {
+		let ID = req.body.id;
+		var requestData = {
+			project_name:req.body.project_name,
+			project_title:req.body.project_title,
+			project_code:req.body.project_code,
+			cost:req.body.cost,
+			status:req.body.status,
+		}
+		  project_Model.updateProjectInfo(ID,requestData,(error, projects) => {
+			  console.log(projects);
+			  if(projects){
+				  response.successResponse("Project Update successfully",projects, (error, result) => {
+					  res.status(responseCode.HTTP_OK).json(result);
+				  });
+			  }else{
+				  response.errorResponse("Something went wrong!", (error, result) => {
+						  res.status(responseCode.HTTP_NOT_FOUND).json(result);
+				  });
+			  }
+		  });
+	  } catch (e) {
+		  //console.log(e.message);
+		  response.errorResponse('Something went wrong!.',(error,result) =>{
+			  res.status(responseCode.HTTP_INTERNAL_SERVER_ERROR).json(result);
+		  });
+	  }
+  };
+  module.exports.delete = async (req,res) =>{
+	try {
+		let ID = req.body.id;
+		
+		  project_Model.deleteProject(ID,(error, projects) => {
+			  console.log(projects);
+			  if(projects){
+				  response.successResponse("Project Delete successfully",projects, (error, result) => {
+					  res.status(responseCode.HTTP_OK).json(result);
+				  });
+			  }else{
+				  response.errorResponse("Something went wrong!", (error, result) => {
+						  res.status(responseCode.HTTP_NOT_FOUND).json(result);
+				  });
+			  }
+		  });
+	  } catch (e) {
+		  //console.log(e.message);
+		  response.errorResponse('Something went wrong!.',(error,result) =>{
+			  res.status(responseCode.HTTP_INTERNAL_SERVER_ERROR).json(result);
+		  });
+	  }
+  };
 
