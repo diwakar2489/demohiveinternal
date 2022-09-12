@@ -36,31 +36,40 @@ Project.getProjectById = (ProjectID , result) =>{
 }
 //update Project
 Project.updateProjectInfo = (id, userReqtData, result) =>{
-    var command = 'update tt_internal_project_lists set project_name = ?,project_title =?,project_code = ?,cost = ?,status = ? where id= ?'
-    dbConn.query(command,
-        [
-            userReqtData.project_name,
-            userReqtData.project_title,
-            userReqtData.project_code,
-            userReqtData.cost,
-            userReqtData.status,
-            id
-        ],(err,res)=>{
-        if(err){
-            console.log(err)
-        }else {
-            result(null,res);
-        }
-    })
+    if(id){
+        var command = 'update tt_internal_project_lists set project_name = ?,project_title =?,project_code = ?,cost = ?,status = ? where id= ?'
+        dbConn.query(command,
+            [
+                userReqtData.project_name,
+                userReqtData.project_title,
+                userReqtData.project_code,
+                userReqtData.cost,
+                userReqtData.status,
+                id
+            ],(err,res)=>{
+            if(err){
+                console.log(err)
+            }else {
+                result(null,res);
+            }
+        })
+    }else{
+        console.log(err)
+    }
+    
 }
 //delete Project
 Project.deleteProject = (id, result) =>{
-    dbConn.query('delete from tt_internal_project_lists where id= ?',id,(err,res)=>{
-        if(err){
-            console.log(err)
-        }else {
-            result(null,res);
-        }
-    })
+    if(id){
+        dbConn.query('delete from tt_internal_project_lists where id= ?',id,(err,res)=>{
+            if(err){
+                console.log(err)
+            }else {
+                result(null,res);
+            }
+        })
+    }else{
+        console.log(err)
+    }
 }
 module.exports = Project;
