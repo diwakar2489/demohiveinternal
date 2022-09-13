@@ -1,7 +1,6 @@
 var md5 = require('md5');
 const jwt = require("jsonwebtoken");
-var db = require("../../models");
-const User = db.users;
+
 
 // login authentication
 

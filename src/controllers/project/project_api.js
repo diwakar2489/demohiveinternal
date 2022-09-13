@@ -1,5 +1,4 @@
-var db = require("../../models");
-var Project = db.project_list;
+
 const response = require('../../config/response');
 const responseCode = require('../../utils/constant');
 const project_Model = require('../../models/projectListModel');
