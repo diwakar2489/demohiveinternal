@@ -10,8 +10,8 @@ var Project = function (list){
 //get All Project
 Project.getAllProject = (result) =>{
     dbConn.query('select P.id as pid,P.project_name,P.project_title,P.project_code,P.cost,P.currency_code,P.project_start_date,'+
-    'P.project_end_date,P.status,concat(UI.firstName," ",UI.lastName) name from tt_internal_project_lists as P '+
-    'join tm_users_infos as UI on UI.id = P.created_by ',(err,res)=>{
+    'P.project_end_date,P.status,concat(UI.firstName," ",UI.lastName) name from tt_internal_project_list as P '+
+    'join tm_users_info as UI on UI.id = P.created_by ',(err,res)=>{
         if(err){
             console.log(err)
             result(err);
@@ -24,8 +24,8 @@ Project.getAllProject = (result) =>{
 //get Project by id
 Project.getProjectById = (ProjectID , result) =>{
     dbConn.query('select P.id as pid,P.project_name,P.project_title,P.project_code,P.cost,P.currency_code,P.project_start_date,'+
-    'P.project_end_date,P.status,concat(UI.firstName," ",UI.lastName) name from tt_internal_project_lists as P '+
-    'join tm_users_infos as UI on UI.id = P.created_by where P.id = '+ProjectID,(err,res)=>{
+    'P.project_end_date,P.status,concat(UI.firstName," ",UI.lastName) name from tt_internal_project_list as P '+
+    'join tm_users_info as UI on UI.id = P.created_by where P.id = '+ProjectID,(err,res)=>{
         if(err){
             console.log(err)
             result(err);
@@ -37,7 +37,7 @@ Project.getProjectById = (ProjectID , result) =>{
 //get add Project
 Project.createProjectInfo = (ProjectReqData, result) =>{
     
-    var command = 'INSERT INTO tt_internal_project_lists (project_name,project_title,project_code,cost,currency_code,project_start_date,project_end_date,status) VALUES (?,?,?,?,?,?,?,?)' ;
+    var command = 'INSERT INTO tt_internal_project_list (project_name,project_title,project_code,cost,currency_code,project_start_date,project_end_date,status) VALUES (?,?,?,?,?,?,?,?)' ;
     //var id = uuidv1();
     dbConn.query(command,[
         ProjectReqData.project_name,
@@ -61,7 +61,7 @@ Project.createProjectInfo = (ProjectReqData, result) =>{
 //update Project
 Project.updateProjectInfo = (id, userReqtData, result) =>{
     if(id){
-        var command = 'update tt_internal_project_lists set project_name = ?,project_title =?,project_code = ?,cost = ?,status = ? where id= ?'
+        var command = 'update tt_internal_project_list set project_name = ?,project_title =?,project_code = ?,cost = ?,status = ? where id= ?'
         dbConn.query(command,
             [
                 userReqtData.project_name,
@@ -85,7 +85,7 @@ Project.updateProjectInfo = (id, userReqtData, result) =>{
 //delete Project
 Project.deleteProject = (id, result) =>{
     if(id){
-        dbConn.query('delete from tt_internal_project_lists where id= ?',id,(err,res)=>{
+        dbConn.query('delete from tt_internal_project_list where id= ?',id,(err,res)=>{
             if(err){
                 console.log(err)
             }else {
