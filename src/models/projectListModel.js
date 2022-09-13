@@ -34,6 +34,30 @@ Project.getProjectById = (ProjectID , result) =>{
         }
     })
 }
+//get add Project
+Project.createProjectInfo = (ProjectReqData, result) =>{
+    
+    var command = 'INSERT INTO tt_internal_project_lists (project_name,project_title,project_code,cost,currency_code,project_start_date,project_end_date,status) VALUES (?,?,?,?,?,?,?,?)' ;
+    //var id = uuidv1();
+    dbConn.query(command,[
+        ProjectReqData.project_name,
+        ProjectReqData.project_title,
+        ProjectReqData.project_code,
+        ProjectReqData.cost,
+        ProjectReqData.currency_code,
+        ProjectReqData.project_start_date,
+        ProjectReqData.project_end_date,
+        ProjectReqData.status],
+        (err,res)=>{
+        if(err){
+            console.log(err)
+        }else {
+            var project_id = res.insertId;
+            console.log('Last insert ID in users', project_id);
+            result(null,project_id);
+        }
+    })
+};
 //update Project
 Project.updateProjectInfo = (id, userReqtData, result) =>{
     if(id){
