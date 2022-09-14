@@ -37,7 +37,7 @@ Project.getProjectById = (ProjectID , result) =>{
 //get add Project
 Project.createProjectInfo = (ProjectReqData, result) =>{
     
-    var command = 'INSERT INTO tt_internal_project_list (project_name,project_title,project_code,cost,currency_code,project_start_date,project_end_date,status) VALUES (?,?,?,?,?,?,?,?)' ;
+    var command = 'INSERT INTO tt_internal_project_list (project_name,project_title,project_code,cost,currency_code,project_start_date,project_end_date,created_by,status) VALUES (?,?,?,?,?,?,?,?)' ;
     //var id = uuidv1();
     dbConn.query(command,[
         ProjectReqData.project_name,
@@ -47,6 +47,7 @@ Project.createProjectInfo = (ProjectReqData, result) =>{
         ProjectReqData.currency_code,
         ProjectReqData.project_start_date,
         ProjectReqData.project_end_date,
+        ProjectReqData.created_by,
         ProjectReqData.status],
         (err,res)=>{
         if(err){
@@ -61,13 +62,14 @@ Project.createProjectInfo = (ProjectReqData, result) =>{
 //update Project
 Project.updateProjectInfo = (id, userReqtData, result) =>{
     if(id){
-        var command = 'update tt_internal_project_list set project_name = ?,project_title =?,project_code = ?,cost = ?,status = ? where id= ?'
+        var command = 'update tt_internal_project_list set project_name = ?,project_title =?,project_code = ?,cost = ?,created_by = ?, status = ? where id= ?'
         dbConn.query(command,
             [
                 userReqtData.project_name,
                 userReqtData.project_title,
                 userReqtData.project_code,
                 userReqtData.cost,
+                userReqtData.created_by,
                 userReqtData.status,
                 id
             ],(err,res)=>{

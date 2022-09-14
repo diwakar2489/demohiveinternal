@@ -36,6 +36,7 @@ module.exports.add = async (req,res) =>{
 				currency_code:req.body.currency_code,
 				project_start_date:req.body.project_start_date,
 				project_end_date:req.body.project_end_date,
+				created_by:'25',
 				status:'1',
 			}
 			project_Model.createProjectInfo(requestData,(error, projects) => {
@@ -90,6 +91,7 @@ module.exports.edit = async (req,res) =>{
 			project_title:req.body.project_title,
 			project_code:req.body.project_code,
 			cost:req.body.cost,
+			created_by:'25',
 			status:req.body.status,
 		}
 		  project_Model.updateProjectInfo(ID,requestData,(error, projects) => {
