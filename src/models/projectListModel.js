@@ -7,11 +7,46 @@ var Project = function (list){
     this.status = list.status;
 };
 
+Project.getAllProject = (pagees,pageSize,result) =>{
+	
+	 dbConn.query('select count(C.id) as total from tt_internal_project_list as C '+
+    'join tm_users_info as UI on UI.id = C.created_by ',(err,resultCount)=>{
+		
+        const numOfResults = resultCount.length;
+        const numberOfPages = Math.ceil(numOfResults / pageSize);
+        let page = pagees ? Number(pagees) : 1;
+		const startingLimit = (page - 1) * pageSize;
+		
+		dbConn.query('select P.id as pid,P.project_name,P.project_title,P.project_code,P.cost,P.currency_code,P.project_start_date,'+
+		'P.project_end_date,P.status,concat(UI.firstName," ",UI.lastName) name from tt_internal_project_list as P '+
+		'join tm_users_info as UI on UI.id = P.created_by limit '+startingLimit+','+pageSize,(err,res)=>{
+			if(err){
+				console.log(err)
+				result(err);
+			}else {
+				 if(err) throw err;
+				let iterator = (page - 10) < 1 ? 1 : page - 10;
+				let endingLink = (iterator + 9) <= numberOfPages ? (iterator + 9) : page + (numberOfPages - page);
+				if(endingLink < (page + 4)){
+					iterator -= (page + 4) - numberOfPages;
+					
+				result(null,{
+						data: res,
+						page,
+						numberOfPages,
+						resultCount
+					});
+				}
+			}
+		})
+    })
+}
+
 //get All Project
-Project.getAllProject = (pageNo,result) =>{
-    dbConn.query('select P.id as pid,P.project_name,P.project_title,P.project_code,P.cost,P.currency_code,P.project_start_date,'+
-    'P.project_end_date,P.status,concat(UI.firstName," ",UI.lastName) name from tt_internal_project_list as P '+
-    'join tm_users_info as UI on UI.id = P.created_by limit '+pageNo,(err,res)=>{
+Project.getAllCountProject = (result) =>{
+	
+    dbConn.query('select COUNT(*)as total from tt_internal_project_list as P '+
+    'join tm_users_info as UI on UI.id = P.created_by ',(err,res)=>{
         if(err){
             console.log(err)
             result(err);
@@ -20,6 +55,7 @@ Project.getAllProject = (pageNo,result) =>{
         }
     })
 }
+
 
 //get Project by id
 Project.getProjectById = (ProjectID , result) =>{

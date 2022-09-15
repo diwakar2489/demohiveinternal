@@ -7,25 +7,36 @@ const paginate = require('jw-paginate');
 module.exports.List = async (req,res) =>{
  //console.log(req);
   try {
-	  const page = parseInt(req.query.page) || 1;
-		project_Model.getAllProject(page,(error, projects) => {
+	  const pageSize = 10;
+	 const page = parseInt(req.query.page) || 1;
+	 const skip = (page-1)*pageSize;
+	  //console.log();
+	  project_Model.getAllCountProject((error, projectscount) => {
+		  
+	  
+	  
+	project_Model.getAllProject(page,pageSize,(error, projects) => {
+		
 			
 			if(projects){
-				//console.log(projects);
+				//project_Model.getProjectCount((error, projectsCount) => {
+				// const pager = paginate(projects.length, page, pageSize);
 				
-				const pageSize = 10;
-				const pager = paginate(projects.length, page, pageSize);
-
 				// get page of items from items array
-				const DataItems = projects.slice(pager.startIndex, pager.endIndex + 1);
-				response.successResponse("Project List fetch successfully",{pager, DataItems}, (error, result) => {
-					res.status(responseCode.HTTP_OK).json({pager, DataItems});
-				});
+				//const DataItems = projects.slice(pager.startIndex, pager.endIndex + 1);
+				 const noOfResult = projectscount;
+				const totalPages = Math.ceil(noOfResult / pageSize);
+					response.successResponse("Project List fetch successfully",{projects}, (error, result) => {
+						res.status(responseCode.HTTP_OK).json({projects});
+					});
+				//});
 			}else{
 				response.errorResponse("Something went wrong!", (error, result) => {
 						res.status(responseCode.HTTP_NOT_FOUND).json(result);
 				});
 			}
+		});
+	
 		});
 	} catch (e) {
         //console.log(e.message);
