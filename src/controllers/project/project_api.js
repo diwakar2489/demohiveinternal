@@ -2,15 +2,24 @@
 const response = require('../../config/response');
 const responseCode = require('../../utils/constant');
 const project_Model = require('../../models/projectListModel');
+const paginate = require('jw-paginate');
 
 module.exports.List = async (req,res) =>{
- 
+ //console.log(req);
   try {
-		project_Model.getAllProject((error, projects) => {
-			console.log(projects);
+	  const page = parseInt(req.query.page) || 1;
+		project_Model.getAllProject(page,(error, projects) => {
+			
 			if(projects){
-				response.successResponse("Project List fetch successfully",projects, (error, result) => {
-					res.status(responseCode.HTTP_OK).json(result);
+				//console.log(projects);
+				
+				const pageSize = 10;
+				const pager = paginate(projects.length, page, pageSize);
+
+				// get page of items from items array
+				const DataItems = projects.slice(pager.startIndex, pager.endIndex + 1);
+				response.successResponse("Project List fetch successfully",{pager, DataItems}, (error, result) => {
+					res.status(responseCode.HTTP_OK).json({pager, DataItems});
 				});
 			}else{
 				response.errorResponse("Something went wrong!", (error, result) => {

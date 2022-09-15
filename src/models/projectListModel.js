@@ -8,10 +8,10 @@ var Project = function (list){
 };
 
 //get All Project
-Project.getAllProject = (result) =>{
+Project.getAllProject = (pageNo,result) =>{
     dbConn.query('select P.id as pid,P.project_name,P.project_title,P.project_code,P.cost,P.currency_code,P.project_start_date,'+
     'P.project_end_date,P.status,concat(UI.firstName," ",UI.lastName) name from tt_internal_project_list as P '+
-    'join tm_users_info as UI on UI.id = P.created_by ',(err,res)=>{
+    'join tm_users_info as UI on UI.id = P.created_by limit '+pageNo,(err,res)=>{
         if(err){
             console.log(err)
             result(err);
